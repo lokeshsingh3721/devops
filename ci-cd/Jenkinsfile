@@ -10,7 +10,7 @@ pipeline{
       }
       steps{
         sh 'git clone https://github.com/lokeshsingh3721/devops'
-        sh 'cd devops/ci-cd && node inde.js'
+        sh 'cd devops/ci-cd && node index.js'
       }
     }
   }
