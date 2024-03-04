@@ -9,7 +9,7 @@ pipeline{
         }
       }
       steps{
-        'node index.js'
+        sh 'node index.js'
       }
     }
   }
