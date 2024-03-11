@@ -17,11 +17,12 @@ spec:
       containers:
         - name: node-app
           image: lokesh3721/node-app:latest
-          env:
-            - name: db-port
-              valueFrom:
-                configMapKeyRef:
-                  name: node-config # The ConfigMap this value comes from.
-                  key: db-port # The key to fetch.
+          volumeMounts:
+            - name: database-connection
+              mountPath: /opt
           ports:
             - containerPort: 3000
+      volumes:
+        - name: database-connection
+          configMap:
+            name: node-config
