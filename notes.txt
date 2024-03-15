@@ -1,0 +1,457 @@
+
+
+——————————————————————————————————————————————————————————
+CONFIGURATION MANAGEMENT - ANSIBLE 
+——————————————————————————————————————————————————————————
+
+Configuration management basically introduced because it was tough to manage the so many servers …coz we can’t manually ssh into each of them…even if write shell script .it would differ according to the distribution  so it was needed to invent a tool …then we invented ansible 
+
+Ansible features.				.  Puppet features   
+
+ — push 							pull
+— agentless 						master | slave 
+— Dynamic inventory 				
+— good support with win and 
+     Linux 
+— simple	(YAML LANG)						puppet language
+ 
+
+We can write our ansible modules for your application and make it public through ansible galaxy 
+
+It doesn’t matter for the cloud provides ..only public ip address it requires…enabled ssh …
+
+
+
+Open the host server 
+	- install the ansible init 
+	- ssh-keygen
+	- cd to the sh/ folder where keygen 
+	- copy the public key 
+
+Open the target server 
+	- ssh-keygen
+	-cd to /sh folder 
+	- vi authorize file and paste the host’s pub key init and save it 
+
+Go back to the host server 
+	- type ssh target’s private ip address
+
+BOOM —
+
+
+Ansible adhoc commands 
+
+If you want to use 1 or 2 commands always go with ansible adhoch commands instead of creating playbook 
+
+GROUPING SERVER
+
+[DB]
+
+Ip1
+1p2
+
+[web]
+
+Ip1
+1p2
+
+
+Ansible -I inventory DB -m “shell” -a “command”
+
+Whenever we want to create a playbook which has 50-60 task then use ansible-galaxy command to create rules 
+
+
+
+
+
+------------------------------------------------------------------------------------------
+INFRASTRUCTURE AS CODE 
+------------------------------------------------------------------------------------------
+
+
+
+When we want to move our infra from one cloud provider to another cloud provider for example AWS to AZURE then we need to learn the AZURE RESOURCE MANAGER 
+Then agin AZURE TO THE ON PREMISE ,,then we need to write heat templates ..so it will become hectic every time to write all the scripts…all these cli scripts are called 
+Infrastructure as code …
+
+Then terraform come into the picture and solve this issue 
+	
+It uses the concept of API as CODE  in which we just have to make the minimal changes ..our infra will be moved to another cloud provider 
+
+
+#Why should we use terraform
+
+* Manage any infrastructure
+* Track your infrastructure 
+* Automate change
+* Standardize configuration 
+* Collaborate	
+
+#Terraform life cycle 
+
+* 	WRITE  -> write the terraform config file..
+
+* 	PLAN -> test the terraform config file…
+	
+* 	APPLY -> apply the terraform config to the cloud 
+
+* 	DESTROY 
+
+#Good practices for  terraform 
+
+* 	never store the state files remotely , not on your local machine
+* 	its is not a good idea to store the state file in source control
+* 	isolate and organise the state files to reduce the blast radius 
+* 	dont manipulate the state file 
+
+Always store the state file in the remote backend and set the read permission only 
+
+Remote backends are like s3 buckets …so everyone will be updating the state file in centralised place 
+And if they are parallel req to update the state file then our state file willbe Locked and free when the prev req
+Is completed …
+
+Locking mechanism can be done with the help of dynamo DB
+
+
+#Terraform Modules 
+
+	way of writing the the re usable code 
+	
+#Problems with terraform
+
+* State file is single source of truth
+* Manual changes to the cloud provider cannot be identified and auto-corrected
+* Not a gitops friendly too. Don’t play well with flux or Argo CD
+* Can become very complex and difficult to manage
+* Trying to position as configuration management tool as well.
+
+
+
+
+------------------------------------------------------------------------------------------
+CI/CD
+------------------------------------------------------------------------------------------
+
+CI -> continuos intégration
+CD -> continuous Delivery
+ 
+
+Company has to do all these following :-
+
+* Unit testing
+* Static code analysis
+* Code quality /vulnerablility
+* Automation
+* Reports
+* deployment
+ 
+	what cd/cd will do…it will keep an eye on GitHub repo whenever any commit is done .it will automatically perform all the above
+	operations 
+
+   Jekins is a orchestrator which will facilitate  all of these tool within Jenkins pipelines
+	
+Jenkins is a legacy tool nowadays 
+
+
+------------------------------------------------------------------------------------------
+PROJECT MANAGEMENT 
+------------------------------------------------------------------------------------------
+
+
+Water falling methodology and agile methodology
+
+JIRA
+
+
+------------------------------------------------------------------------------------------
+CONTAINERS 
+------------------------------------------------------------------------------------------
+
+* How Containers Revolutionized Application Scalability and Efficiency
+* 
+* 1. **Physical Servers:**
+*   - This was the traditional approach where applications were directly installed on physical hardware.
+*   - Advantages: Simple and provided full control over the environment.
+*   - Disadvantages: Scaling up and down was difficult and resource-intensive. Adding new servers meant buying new hardware, and underutilized servers wasted resources.
+* 
+* 2. **Virtual Machines (VMs) with Hypervisors:**
+*   - Introduced a layer of abstraction, allowing multiple virtual machines to run on a single physical server.
+*   - Advantages: Improved resource utilization and easier scaling compared to physical servers. You could create new VMs on the fly.
+*   - Disadvantages: VMs still require a full operating system for each instance, making them heavier and slower to start compared to containers.
+* 
+* 3. **Cloud Computing with EC2 Instances:**
+*   - Offered on-demand access to virtual servers in the cloud (like Amazon's EC2).
+*   - Advantages: Increased scalability and flexibility. You could easily spin up new instances when needed and pay only for what you use.
+*   - Disadvantages: While offering better resource utilization than physical servers, VMs can still be resource-intensive. Additionally, managing a large number of VMs can become complex.
+* 
+* 4. **Containers:**
+*   - Emerged as a more lightweight and efficient alternative to VMs.
+*   - Advantages: Containers share the host's operating system kernel, making them much faster to start and stop than VMs. They are also more portable and require fewer resources.
+*   - Disadvantages: Containers may not be suitable for all applications that require full control over the operating system environment.
+* 
+* **So, containers addressed the limitations of both physical servers and VMs by offering a more efficient and portable way to package and run applications.** They improve resource utilization, enable faster scaling, and simplify application deployment across different environments.How Containers Revolutionized Application Scalability and Efficiency
+	
+
+
+------------------------------------------------------------------------------------------
+Docker commands 
+------------------------------------------------------------------------------------------
+
+
+1. Docker run -it image_name ( to pull / spin up the container)  —> hub.docker.com for the images
+2. Docker container ls     ( list running containers)
+3. Docker container ls -a  ( list all containers)
+4. Docker start container_name (to start container)
+5. Docker stop container_name (to stop container)
+6. Docker exec container_name command (Execute the command inside the container and exit with result)
+7. Docker exec -it container_name command (execute but dont disconnect the terminal ..-it stands for interactive)
+8. Docker images (get all the images )
+
+- [ ] Port Mapping 
+
+Map container’s port to local machine port to access the machine 
+
+Docker run -it -p yourPort:containers_port container_name —> docker run -it -p 3000:3000 Nodejs
+
+- [ ] Env Variables 
+
+Docker run -it -p 300:300 -e key=value container_name
+
+- [ ] Dockerize the application 
+
+1. Create a file inside your app Dockerfile (same name )
+2. FROM ubuntu
+3. RUN apt-get update 
+4. RUN curl -sl https://deb.nodesource.com/setup_18.x | bash -
+5. COPY package.json package.json (src to dest)
+6. COPY main.js main.js
+7. RUN npm install
+8. ENTRYPOINT [“” , “main.js”]
+
+Docker build -t your_imag_name . ( dot is a path) 
+
+- [ ] Docker compose 
+
+Create , run and delete multiple containers with docker compose 
+
+1. Docker compose up 
+2. Docker compose down 
+3. Docker compose up -d ( -d is detached mode)
+ 
+
+- [ ] Docker network
+
+	LOGICAL SEPRATION
+
+1. Bridge - create a bridge and then all container will be connected to brigde 
+2. Host  — container will be on host post 
+3. None 
+
+- Create your own network 
+    - Docker network create -d bridge name
+    - Docker run -it —network=network_name demo ubuntu
+    - Docker network inspect netwrok_name (to See all containers inside that network)
+
+- [ ] Volume mounting 
+- [ ] 
+	when the containers is destroyed they take away all the files with them ..so to prevent It we can use volume mounting
+
+	— docker run -it -v host_machine_path:container_macihine_path  image_name (better option is —mount instead of -v)
+
+- [ ] Effieceit caching 
+- [ ] Multi staging 
+
+
+MOUNT BINDS VS VOLUME BINDS 
+
+Mount bind only bind the container with the host but in volume bind we can bind volume to anything like ec2 instance etc 
+
+------------------------------------------------------------------------------------------
+Kubernetes 
+------------------------------------------------------------------------------------------
+
+Kubernetes is container orchestration platform 
+Containers are ephemeral in nature 
+
+Problems with docker 
+
+- Nature of containers are scope to single host in docker 
+- If the container got killed …we have to manually check which container is running and then figure out that’s why my application is down …means it cannot auto heal
+-  Auto scaling 
+- Docker doesn’t support enterprise level standard
+
+Kubernets solve all these problems 
+
+First problem :-
+
+**Master Node:**
+
+* **Function:** Acts as the **central controller** and **brain** of the Kubernetes cluster.
+* **Responsibilities:**
+    * Schedules containers across worker nodes.
+    * Monitors the health of the cluster.
+    * Manages resource allocation.
+    * Provides the API for interacting with the cluster.
+* **Analogy:** Like the **control center** of a city, managing utilities, traffic flow, and resource allocation for various districts.
+
+**Docker:**
+
+* **Function:** Provides the **platform** for running individual containers.
+* **Responsibilities:**
+    * Creates and manages the lifecycle of containers.
+    * Isolates containers from each other and the underlying host system.
+* **Analogy:** Acts as the **individual host** (building) where apartments (containers) reside, providing them with the necessary resources and isolation.
+
+In essence, while both have crucial roles:
+
+* **Docker** focuses on **individual container execution** within a single host.
+* **Kubernetes** orchestrates and manages **multiple containers** across a **distributed cluster** of machines.
+
+Second problem :-
+
+	Kubernetes something have replica set which auto scall the container whenever It receives the large load 
+
+Third problem:-
+
+		Kubernetes control & fix the damage by rollout the new container 
+
+Fourth problem:-
+
+		google created enterprise level container orchestration platform 
+		but docker is only a container platform  
+
+
+
+#k8s Architecture 
+
+	in docker we must have a docker runtime called dockershim  to run the application 
+	in kubernetes we create the master and worker …
+
+	
+￼
+
+#POD 
+
+In docker we have a container …in Kubernetes we have pods ..so instead of manually passing all the args in the cmd we have .yaml file which is the configuration of the pod (single or group of container )..pod is wrapper 
+
+minikube start —memory=4096 —driver=hyperkit
+
+Kubectl create -f pod.yml (create the pod)
+Kubectl get pods
+
+https://kubernetes.io/docs/reference/kubectl/quick-reference/
+
+Kubectl describe pod pod_name ( for debugging the pod )
+
+Kubectl logs pod_name (for any logs )
+
+#Kubernetes Deployment
+
+Diff between container , pod and deployment 
+
+We create container using command line 
+
+We create pod using the pod.yml file but pod can have 1 or more containers
+
+Deployment  deploy pods but it supports the imp features like auto-healing and auto scaling which pods doesn’t support 
+So we should always deploy our application deployment not directly as pods
+
+Kubectl get all (for listing everything )
+
+
+#Kubernetes Services 
+
+NO of replica is dependent upon the no of user coming and how many user can 1 pod handle…
+
+Even if we deploy the application using deployment which has the auto scaling and auto healing capabilities still our application would fall why because containers are ephemeral in nature and when replica set heal it then the ip  will be changed so without the services (act as load balancer ) its not possible to configure ip automatically …
+
+In short : 
+		
+		Load balancing 
+		Service discovery (keep track of pods using labels and selectors instead of  ip address)
+		Expose to external world 
+		
+
+We can create the service using three modes 
+		- cluseter IP -> those who has access to cluster can access the application  ( discovery and load balancing benefits)
+		- Node Port -> inside org who has access to node/worker can access the application
+		- Load balancer -> expose to external world and can be accessible by anyone
+
+#Kubernetes  ingress 
+
+￼
+
+1 - 	in previous time ….when people were not migrated to the Kubernetes they were exposed to the services like ratio based load balancing , sticky session , path , domain , white listing , black listing etc but when the migrated to Kubernetes ..these  features were not supported at that time so those people were disappointed 
+ 
+2 - for load balancer type service …cloud provider charge will charge for each service (static public addresses)
+
+So kubernetes introduced the ingress resource …which uses the controller which can be defined by the user which they want nginx , ambassador etc ..so after creating the resource it also has to be deployed like if its nginx then on nginx it has to be deployed ….
+
+It doesn’t have 1:1 mapping 1 nginx resource be used for different paths like route based , host based etc 
+
+End of the day ingress is a load balancer + API gateway 
+
+Applying Ingress Is same just create yaml  file and apply that but make sure u have install controller in your local machine 
+
+
+#Kubernetes configmaps and secrets 
+
+Configmaps can be used as a volume bind or env file
+
+
+Store sensitive data in secrete  - stored in etcd (we can create our own encryption )
+Store less sensitive data in configmaps  
+
+If hacker directly hacked the cluster then it would be easy to see the  secret file so to prevent this use strong RBAC 
+
+Second could be if hacker has access to the etcd then hacker won’t be able to hack because our data will be stored in secrets which is encrypted
+
+Create cm.yml (https://kubernetes.io/docs/concepts/configuration/configmap/)
+
+Kubectl apply -f cm.yml 
+
+
+If I want my container to be in sync with env variables …then I have to use volumeMounts …and in volume mounts we can use configMaps …but if we do it without the volume mounts then if we change the env variables our container will not be in sync .
+
+#Kubernetes  RBAC (ROLL BASED ACCESS CONTROL)
+
+
+- User management
+- Managing the access of services running on the server
+
+Three major things to managing the RBAC
+
+- Service account / user
+- Roles/ cluster role
+- Role binding / CRB
+
+Kubernetes doesn’t do user management it offloads it to the identity providers  
+
+￼
+
+Create an account on openshift Redhat
+
+#Kubernetes Monitoring 
+
+Prometheus is a monitoring tool which get the data from open Kubernetes api server 
+Grafana displays the metrics from the prometheus 
+
+------------------------------------------------------------------------------------------
+AWS
+------------------------------------------------------------------------------------------
+
+￼
+In the past, companies built their own data centers (server warehouses) to run applications. This had drawbacks:
+
+Wasted Resources: Companies bought servers with fixed capacity, leading to wasted resources if their needs were smaller. Conversely, they couldn’t handle sudden spikes in demand.
+
+High Costs: Buying and maintaining servers was expensive, especially for small businesses.
+
+This is where cloud computing comes in!
+Public vs Private cloud
+
+Private cloud computing is nothing but building your own data center. where you have to manage all the resources and monitor them on your own.
+
+But in the public cloud, we rent the server from a third-party company that is also using the private cloud under the hood, but they have allocated you a single machine from their data center. And you can use their machine.
+
+By using the public cloud, we don’t have to worry about purchasing our own physical server. They have provided enough resources, which is more than sufficient to build an enterprise-level application. Amazon Web Services (AWS) has more than 200 services it offers. Similarly, Azure and GCP are also emerging cloud platforms.
